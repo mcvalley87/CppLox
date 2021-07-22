@@ -140,6 +140,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CppLox.cpp" />
+    <ClCompile Include="Expr.cpp" />
+    <ClCompile Include="Interpreter.cpp" />
+    <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="Tokens.cpp" />
+    <ClCompile Include="Visitor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Expr.h" />
+    <ClInclude Include="Interpreter.h" />
+    <ClInclude Include="Literals.h" />
+    <ClInclude Include="Scanner.h" />
+    <ClInclude Include="Tokens.h" />
+    <ClInclude Include="Visitor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

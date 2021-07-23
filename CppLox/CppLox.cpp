@@ -7,7 +7,7 @@
 using namespace Lox::Interpreter;
 int main()
 {
-    AstPrinter ast;
+    //AstPrinter ast;
     
     std::unique_ptr<Expr> expression = std::make_unique<BinaryExpr>(
         std::make_unique<UnaryExpr>(
@@ -19,7 +19,7 @@ int main()
             std::make_unique<LiteralExpr>(
                 std::make_unique<LoxDouble>(LoxDouble(45.67)))));
     
-    ast.print(*expression);
+    //ast.print(*expression);
     //std::cout << le->getLiteral()->toString()<< std::endl;
     //std::unique_ptr<Expr> ge = std::make_unique<GroupingExpr>(le);
     /*std::unique_ptr<Expr> expression = new BinaryExpr(

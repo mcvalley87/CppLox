@@ -12,8 +12,7 @@
 namespace Lox {
     namespace Interpreter {
 
-
-        class Visitor;
+        template<typename R> class Visitor;
             /// <summary>
             /// 
             /// </summary>
@@ -22,7 +21,7 @@ namespace Lox {
                 virtual ~Expr() = default;
 
                 // TODO: template visitors?
-                virtual void accept(Visitor& visitor) = 0;
+                virtual boost::any accept(Visitor<boost::any>& visitor) = 0;
             };
 
             /// <summary>
@@ -32,7 +31,7 @@ namespace Lox {
 
             public:
                 BinaryExpr(std::unique_ptr<Expr> left, Token op, std::unique_ptr<Expr> right);
-                void accept(Visitor& visitor);
+                boost::any accept(Visitor<boost::any>& visitor);
 
                 std::unique_ptr<Expr> getLeftExpr() { return std::move(lExpr); }
                 const Token getOp() const { return op; }
@@ -51,7 +50,7 @@ namespace Lox {
             class GroupingExpr : public Expr {
             public:
                 GroupingExpr(std::unique_ptr<Expr> expr);
-                void accept(Visitor& visitor);
+                boost::any accept(Visitor<boost::any>& visitor);
 
                 std::unique_ptr<Expr> getExpr() { return std::move(expr); }
 
@@ -65,7 +64,7 @@ namespace Lox {
             class LiteralExpr : public Expr {
             public:
                 LiteralExpr(std::unique_ptr<Literal> lit);
-                void accept(Visitor& visitor);
+                boost::any accept(Visitor<boost::any>& visitor);
 
                 Literal* getLiteral() { return literal.get(); } // get copy of the literal
 
@@ -81,7 +80,7 @@ namespace Lox {
             class UnaryExpr : public Expr {
             public:
                 UnaryExpr(Token op, std::unique_ptr<Expr> rExpr);
-                void accept(Visitor& visitor);
+                boost::any accept(Visitor<boost::any>& visitor);
 
                 const Token getOp() const { return op; }
                 std::unique_ptr<Expr> getRightExpr() { return std::move(rExpr); };

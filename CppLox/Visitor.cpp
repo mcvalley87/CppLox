@@ -28,10 +28,9 @@ namespace Lox {
 
 			void AstPrinter::visitLiteralExpr(LiteralExpr& expr) {
 
-				std::unique_ptr<Literal> lit = expr.getLiteral();
-				if (lit == nullptr) std::cout << "Nil";
+				if (expr.getLiteral() == nullptr) std::cout << "Nil";
 
-				std::cout << lit->toString();
+				std::cout << expr.getLiteral()->toString();
 			}
 
 			void AstPrinter::visitUnaryExpr(UnaryExpr& expr) {

@@ -67,7 +67,7 @@ namespace Lox {
                 LiteralExpr(std::unique_ptr<Literal> lit);
                 void accept(Visitor& visitor);
 
-                std::unique_ptr<Literal> getLiteral() { return std::move(literal); }
+                Literal* getLiteral() { return literal.get(); } // get copy of the literal
 
             private:
 

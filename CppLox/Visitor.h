@@ -20,10 +20,11 @@ namespace Lox {
 				virtual ~Visitor() = default;
 
 			public:
-				virtual void visitBinaryExpr(BinaryExpr& expr);
-				virtual void visitGroupingExpr(GroupingExpr& expr);
-				virtual void visitLiteralExpr(LiteralExpr& expr);
-				virtual void visitUnaryExpr(UnaryExpr& expr);
+				// set to zero to avoid linker problem encountered
+				virtual void visitBinaryExpr(BinaryExpr& expr) = 0;
+				virtual void visitGroupingExpr(GroupingExpr& expr) = 0;
+				virtual void visitLiteralExpr(LiteralExpr& expr) = 0;
+				virtual void visitUnaryExpr(UnaryExpr& expr) = 0;
 			};
 
 			class AstPrinter : public Visitor {
@@ -33,10 +34,10 @@ namespace Lox {
 
 				void print(Expr& expr);
 
-				void visitBinaryExpr(BinaryExpr& expr);
-				void visitGroupingExpr(GroupingExpr& expr);
-				void visitLiteralExpr(LiteralExpr& expr);
-				void visitUnaryExpr(UnaryExpr& expr);
+				void visitBinaryExpr(BinaryExpr& expr) override;
+				void visitGroupingExpr(GroupingExpr& expr) override;
+				void visitLiteralExpr(LiteralExpr& expr) override;
+				void visitUnaryExpr(UnaryExpr& expr) override;
 
 				void parenthesize(std::string name, std::vector<std::unique_ptr<Expr>> vExprs);
 			};

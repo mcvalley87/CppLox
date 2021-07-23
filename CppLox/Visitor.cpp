@@ -16,7 +16,7 @@ namespace Lox {
 
 				vExprs.push_back(std::move(expr.getLeftExpr()));
 				vExprs.push_back(std::move(expr.getRightExpr()));
-				//parenthesize(expr.getOp().getLexeme(), vExprs);
+				parenthesize(expr.getOp().getLexeme(), std::move(vExprs));
 			}
 
 			void AstPrinter::visitGroupingExpr(GroupingExpr& expr) {

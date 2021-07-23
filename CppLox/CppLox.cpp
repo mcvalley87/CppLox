@@ -2,9 +2,13 @@
 //
 
 #include <iostream>
+#include "Visitor.h"
+
 
 int main()
 {
+    Lox::Interpreter::AstPrinter ast;
+
     std::cout << "Hello World!\n";
 }
 

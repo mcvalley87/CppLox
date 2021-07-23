@@ -20,10 +20,10 @@ namespace Lox {
 			}
 
 			void AstPrinter::visitGroupingExpr(GroupingExpr& expr) {
-				std::vector<std::shared_ptr<Expr>> vExp;
+				std::vector<std::unique_ptr<Expr>> vExp;
 
-				//vExp.push_back(expr.getExpr());
-				//parenthesize("group", vExp);
+				vExp.push_back(std::move(expr.getExpr()));
+				parenthesize("group", vExp);
 			}
 
 			void AstPrinter::visitLiteralExpr(LiteralExpr& expr) {
@@ -43,6 +43,7 @@ namespace Lox {
 
 				std::cout << "(" << name;
 				for (auto&& expr : vExprs) {
+					std::cout << "another expr" << std::endl;
 					std::cout << " ";
 					expr->accept(*this);
 				}

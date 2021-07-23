@@ -32,7 +32,7 @@ namespace Lox {
 
 			void GroupingExpr::accept(Visitor& visitor) { visitor.visitGroupingExpr(*this); }
 
-			LiteralExpr::LiteralExpr(boost::any value) : literal(value) {
+			LiteralExpr::LiteralExpr(std::unique_ptr<Literal> lit) : literal(std::move(lit)) {
 
 			}
 

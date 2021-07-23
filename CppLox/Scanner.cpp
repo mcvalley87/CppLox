@@ -12,7 +12,7 @@ namespace Lox {
 		/// </summary>
 		/// <returns></returns>
 		bool Scanner::isAtEnd() {
-			return current >= source.length();
+			return unsigned(current) >= source.length();
 		};
 		
 		/// <summary>

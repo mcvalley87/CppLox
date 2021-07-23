@@ -64,14 +64,14 @@ namespace Lox {
             /// </summary>
             class LiteralExpr : public Expr {
             public:
-                LiteralExpr(boost::any literal);
+                LiteralExpr(std::unique_ptr<Literal> lit);
                 void accept(Visitor& visitor);
 
-                const boost::any* getLiteral() const { return &literal; }
+                std::unique_ptr<Literal> getLiteral() { return std::move(literal); }
 
             private:
 
-                boost::any literal;
+                std::unique_ptr<Literal> literal;
 
             };
 

@@ -4,11 +4,22 @@
 #include <iostream>
 #include "Visitor.h"
 
-
+using namespace Lox::Interpreter;
 int main()
 {
-    Lox::Interpreter::AstPrinter ast;
-
+    AstPrinter ast;
+    std::unique_ptr<LiteralExpr> le = std::make_unique<LiteralExpr>(std::make_unique<LoxDouble>(LoxDouble(45.67)));
+    //std::unique_ptr<GroupingExpr> ge = std::make_unique<GroupingExpr>(le);
+    
+    std::cout << le->getLiteral()->toString()<< std::endl;
+    //std::unique_ptr<Expr> ge = std::make_unique<GroupingExpr>(le);
+    /*std::unique_ptr<Expr> expression = new BinaryExpr(
+        new UnaryExpr(
+            Token(TokenType::MINUS, "-", nullptr, 1),
+            new LiteralExpr(123)),
+        Token(TokenType::STAR, "*", nullptr, 1),
+        new GroupingExpr(
+            new LiteralExpr(45.67)));*/
     std::cout << "Hello World!\n";
 }
 

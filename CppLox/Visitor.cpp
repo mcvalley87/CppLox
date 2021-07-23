@@ -42,6 +42,12 @@ namespace Lox {
 			void AstPrinter::parenthesize(std::string name, std::vector<std::unique_ptr<Expr>> vExprs) {
 
 				std::cout << "(" << name;
+				for (auto&& expr : vExprs) {
+					std::cout << " ";
+					expr->accept(*this);
+				}
+
+				std::cout << ")";
 			
 			}
 

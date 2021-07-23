@@ -23,33 +23,32 @@ namespace Lox {
 				std::vector<std::unique_ptr<Expr>> vExp;
 
 				vExp.push_back(std::move(expr.getExpr()));
-				parenthesize("group", vExp);
+				parenthesize("group", std::move(vExp));
 			}
 
 			void AstPrinter::visitLiteralExpr(LiteralExpr& expr) {
-				if (expr.getLiteral() == nullptr) std::cout << "Nil";
 
-				std::cout << expr.getLiteral();
+				std::unique_ptr<Literal> lit = expr.getLiteral();
+				if (lit == nullptr) std::cout << "Nil";
+
+				std::cout << lit->toString();
 			}
 
 			void AstPrinter::visitUnaryExpr(UnaryExpr& expr) {
-
-
-				//vExp.push_back(expr.getRightExpr());
-				//return parenthesize(expr.getOp().getLexeme(), vExp);
+				std::vector<std::unique_ptr<Expr>> vExp;
+				vExp.push_back(std::move(expr.getRightExpr()));
+				return parenthesize(expr.getOp().getLexeme(), std::move(vExp));
 			}
 
 			void AstPrinter::parenthesize(std::string name, std::vector<std::unique_ptr<Expr>> vExprs) {
 
 				std::cout << "(" << name;
 				for (auto&& expr : vExprs) {
-					std::cout << "another expr" << std::endl;
 					std::cout << " ";
 					expr->accept(*this);
 				}
 
 				std::cout << ")";
-			
 			}
 
 	}

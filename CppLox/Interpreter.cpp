@@ -1,6 +1,7 @@
 #include "Tokens.h"
 #include "Scanner.h"
 #include "Interpreter.h"
+#include "Parser.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -60,11 +61,16 @@ namespace Lox {
 			Scanner scanner =  Scanner(source);
 			std::vector<Token> tokens = scanner.scanTokens();
 
-			// For now, just print the tokens.
-			for (Token token : tokens) {
-				std::cout << token.toString() << "\n";
-			}
+			std::cout << "number of tokens scanned: " << tokens.size() << std::endl;
+			Parser parser{ tokens };
+			/*
+			std::unique_ptr<Expr> expression = parser.parse();
+			AstPrinter ast;
 
+			if (hadError) return; // stop if syntax error
+
+			std::cout << boost::any_cast<std::string>(ast.print(*expression)) << std::endl;
+			*/
 		}
 	}
 }

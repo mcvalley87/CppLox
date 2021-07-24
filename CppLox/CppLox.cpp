@@ -8,9 +8,9 @@
 #include "Parser.h"
 
 using namespace Lox::Interpreter;
-int main()
+int main(int argc, char** argv)
 {
-    AstPrinter ast;
+    /*AstPrinter ast;
     
     std::unique_ptr<Expr> expression = std::make_unique<BinaryExpr>(
         std::make_unique<UnaryExpr>(
@@ -22,18 +22,20 @@ int main()
             std::make_unique<LiteralExpr>(
                 std::make_unique<LoxDouble>(LoxDouble(45.67)))));
 
-    std::cout << boost::any_cast<std::string>(ast.print(*expression)) << std::endl;
+    std::cout << boost::any_cast<std::string>(ast.print(*expression)) << std::endl;*/
     
-    //ast.print(*expression);
-    //std::cout << le->getLiteral()->toString()<< std::endl;
-    //std::unique_ptr<Expr> ge = std::make_unique<GroupingExpr>(le);
-    /*std::unique_ptr<Expr> expression = new BinaryExpr(
-        new UnaryExpr(
-            Token(TokenType::MINUS, "-", nullptr, 1),
-            new LiteralExpr(123)),
-        Token(TokenType::STAR, "*", nullptr, 1),
-        new GroupingExpr(
-            new LiteralExpr(45.67)));*/
+    Interpreter interpreter = Interpreter();
+    if (argc > 2) {
+        std::cout << "Usage: Lox [script]";
+        return 64;
+    }
+    else if (argc == 2) {
+        interpreter.runFile(argv[1]);
+    }
+    else {
+        std::cout << "Good Luck, Have Fun\n";
+        interpreter.runPrompt();
+    }
     std::cout << "Hello World!\n";
 }
 

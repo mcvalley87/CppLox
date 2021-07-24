@@ -3,6 +3,18 @@
 namespace Lox {
 	namespace Interpreter {
 
+		Parser::Parser(std::vector<Token> tokens) : tokens(std::move(tokens)) { std::cout << "Number of Tokens: " << tokens.size() << std::endl; };
+
+		std::unique_ptr<Expr> Parser::parse() {
+
+			std::cout << "Number of Tokens: " << tokens.size() << std::endl;
+			try {
+				return expression();
+			}
+			catch (ParseError error) {
+				return nullptr;
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary>
@@ -95,40 +107,79 @@ namespace Lox {
 
 		template<typename ...Args>
 		bool Parser::match(Args...args) {
-
+			std::initializer_list<bool> results{ check(args)... };
+			for (auto r : results) {
+				if (r) {
+					advance();
+					return true;
+				}
+			}
 			return false;
 		}
 
-		bool Parser::check(TokenType type) {
-			return false;
+		bool Parser::check(TokenType type) const {
+			if (isAtEnd()) {
+				return false;
+			}
+			return peek().getType() == type;
 		}; // is current token of given type? only peeks, doesn't consume
 
 		Token Parser::advance() {
+
+			if (!isAtEnd()) { ++current; }
+			return previous();
 			return Token();
 		}; //consumes the current token, returning it similar to method in Scanner
 
 		Token Parser::consume(TokenType type, const char* message) {
-			return Token();
+
+			if (check(type)) { return advance(); }
+
+			throw error(peek(), message);
 		}
 
-		bool Parser::isAtEnd() {
-			return false;
+		bool Parser::isAtEnd() const {
+			return peek().getType() == TokenType::FILE_END;
 		}; // are we at the end of the file?
 
-		Token Parser::peek() {
-			return Token();
+		Token Parser::peek() const {
+			return tokens.at(current);
 		}; // look at the current token without consuming
 
-		Token Parser::previous() {
-			return Token();
+		Token Parser::previous() const {
+			return tokens.at(current - 1);
 		};// look at prior token
 		
 		void Parser::synchronize() {
 		
+			advance();
+
+			while (!isAtEnd()) {
+				if (previous().getType() == TokenType::SEMICOLON) {
+					return;
+				}
+
+				switch (peek().getType()) {
+				case TokenType::CLASS:
+				case TokenType::FUN:
+				case TokenType::VAR:
+				case TokenType::FOR:
+				case TokenType::IF:
+				case TokenType::WHILE:
+				case TokenType::PRINT:
+				case TokenType::RETURN:
+					return;
+				default:
+					break;
+				}
+
+				advance();
+			}
 		}; // synchronize to clear out call frames
 
 		Parser::ParseError Parser::error(Token token, const char* message) const {
 			
+			//Lox::Interpreter::Error(token, message);
 			throw ParseError();
 		}
 	}

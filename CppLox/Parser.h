@@ -16,8 +16,8 @@ namespace Lox {
 			int current{ 0 };
 
 		public:
-			Parser(std::vector<Token> Tokens) : tokens(std::move(tokens)) {};
-
+			Parser(std::vector<Token> tokens);
+			std::unique_ptr<Expr> parse();
 		private:
 
 			class ParseError : public std::runtime_error {
@@ -44,12 +44,12 @@ namespace Lox {
 			/*Helpers*/
 			template<typename ...Args>
 			bool match(Args...args); // match to particular set of tokens
-			bool check(TokenType type); // is current token of given type? only peeks, doesn't consume
+			bool check(TokenType type) const; // is current token of given type? only peeks, doesn't consume
 			Token advance(); //consumes the current token, returning it similar to method in Scanner
 			Token consume(TokenType type, const char* message);
-			bool isAtEnd(); // are we at the end of the file?
-			Token peek(); // look at the current token without consuming
-			Token previous();// look at prior token
+			bool isAtEnd() const; // are we at the end of the file?
+			Token peek() const; // look at the current token without consuming
+			Token previous() const;// look at prior token
 			void synchronize(); // synchronize to clear out call frames
 		};
 	}

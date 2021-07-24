@@ -5,6 +5,7 @@
 #include "Visitor.h"
 #include "Expr.h"
 #include "Interpreter.h"
+#include "Parser.h"
 
 using namespace Lox::Interpreter;
 int main()

@@ -66,7 +66,7 @@ namespace Lox {
                 LiteralExpr(std::unique_ptr<Literal> lit);
                 boost::any accept(Visitor<boost::any>& visitor) const override;
 
-                const Literal& getLiteral() const { return *literal; } // get copy of the literal
+                const Literal& getLiteral() const { return *literal; } // get reference of the literal
 
             private:
 

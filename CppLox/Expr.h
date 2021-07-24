@@ -21,7 +21,7 @@ namespace Lox {
                 virtual ~Expr() = default;
 
                 // TODO: template visitors?
-                virtual boost::any accept(Visitor<boost::any>& visitor) = 0;
+                virtual boost::any accept(Visitor<boost::any>& visitor) const = 0;
             };
 
             /// <summary>
@@ -31,11 +31,11 @@ namespace Lox {
 
             public:
                 BinaryExpr(std::unique_ptr<Expr> left, Token op, std::unique_ptr<Expr> right);
-                boost::any accept(Visitor<boost::any>& visitor);
+                boost::any accept(Visitor<boost::any>& visitor) const override;
 
-                std::unique_ptr<Expr> getLeftExpr() { return std::move(lExpr); }
+                const Expr& getLeftExpr() const { return *lExpr; }
                 const Token getOp() const { return op; }
-                std::unique_ptr<Expr> getRightExpr() { return std::move(rExpr); }
+                const Expr& getRightExpr() const { return *rExpr; }
 
             private:
 
@@ -50,9 +50,9 @@ namespace Lox {
             class GroupingExpr : public Expr {
             public:
                 GroupingExpr(std::unique_ptr<Expr> expr);
-                boost::any accept(Visitor<boost::any>& visitor);
+                boost::any accept(Visitor<boost::any>& visitor) const override;
 
-                std::unique_ptr<Expr> getExpr() { return std::move(expr); }
+                const Expr& getExpr() const { return *expr; }
 
             private:
                 std::unique_ptr<Expr> expr;
@@ -64,9 +64,9 @@ namespace Lox {
             class LiteralExpr : public Expr {
             public:
                 LiteralExpr(std::unique_ptr<Literal> lit);
-                boost::any accept(Visitor<boost::any>& visitor);
+                boost::any accept(Visitor<boost::any>& visitor) const override;
 
-                Literal* getLiteral() { return literal.get(); } // get copy of the literal
+                const Literal& getLiteral() const { return *literal; } // get copy of the literal
 
             private:
 
@@ -80,10 +80,10 @@ namespace Lox {
             class UnaryExpr : public Expr {
             public:
                 UnaryExpr(Token op, std::unique_ptr<Expr> rExpr);
-                boost::any accept(Visitor<boost::any>& visitor);
+                boost::any accept(Visitor<boost::any>& visitor) const override;
 
                 const Token getOp() const { return op; }
-                std::unique_ptr<Expr> getRightExpr() { return std::move(rExpr); };
+                const Expr& getRightExpr() const { return *rExpr; };
 
             private:
                 Token op;

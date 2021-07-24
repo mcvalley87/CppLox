@@ -6,60 +6,60 @@
 namespace Lox {
 	namespace Interpreter {
 
-			boost::any AstPrinter::print(Expr& expr) {
-				return expr.accept(*this);
+		
+			boost::any AstPrinter::print(const Expr& expr) {
+				return boost::any_cast<std::string>(expr.accept(*this));
 			}
 
-			boost::any AstPrinter::visitBinaryExpr(BinaryExpr& expr) {
-
-				/*std::vector<std::unique_ptr<Expr>> vExprs;
-
-				vExprs.push_back(std::move(expr.getLeftExpr()));
-				vExprs.push_back(std::move(expr.getRightExpr()));
-				parenthesize(expr.getOp().getLexeme(), std::move(vExprs));*/
-
-				return nullptr;
-			}
-
-			boost::any AstPrinter::visitGroupingExpr(GroupingExpr& expr) {
-				/*std::vector<std::unique_ptr<Expr>> vExp;
-
-				vExp.push_back(std::move(expr.getExpr()));
-				parenthesize("group", std::move(vExp));*/
-
-				return nullptr;
-			}
-
-			boost::any AstPrinter::visitLiteralExpr(LiteralExpr& expr) {
-
-				/*if (expr.getLiteral() == nullptr) std::cout << "Nil";
-
-				std::cout << expr.getLiteral()->toString();*/
+			boost::any AstPrinter::visitBinaryExpr(const BinaryExpr& expr) {
 				
-				return nullptr;
+				std::string output;
+
+				output.append("(");
+				output.append(expr.getOp().getLexeme());
+				output.append(" ");
+				output.append(boost::any_cast<std::string>(expr.getLeftExpr().accept(*this)));
+				output.append(boost::any_cast<std::string>(expr.getRightExpr().accept(*this)));
+				output.append(")");
+
+				return output;
 			}
 
-			boost::any AstPrinter::visitUnaryExpr(UnaryExpr& expr) {
-				/*std::vector<std::unique_ptr<Expr>> vExp;
-				vExp.push_back(std::move(expr.getRightExpr()));
-				parenthesize(expr.getOp().getLexeme(), std::move(vExp));
-				*/
+			boost::any AstPrinter::visitGroupingExpr(const GroupingExpr& expr) {
+				std::string output;
 
-				return nullptr;
+				output.append("(");
+				output.append("group ");
+				output.append(boost::any_cast<std::string>(expr.getExpr().accept(*this)));
+				output.append(")");
+
+				return output;
 			}
 
-			boost::any AstPrinter::parenthesize(std::string name, std::vector<std::unique_ptr<Expr>> vExprs) {
+			boost::any AstPrinter::visitLiteralExpr(const LiteralExpr& expr) {
 
-				/*std::cout << "(" << name;
-				for (auto&& expr : vExprs) {
-					std::cout << " ";
-					expr->accept(*this);
-				}
+				std::string output;
 
-				std::cout << ")";*/
+				if (expr.getLiteral().toString() == "") output.append("Nil");
 
-				return nullptr;
+				output.append(expr.getLiteral().toString());
+				
+				return output;
 			}
+
+			boost::any AstPrinter::visitUnaryExpr(const UnaryExpr& expr) {
+				std::string output;
+
+				output.append("(");
+				output.append(expr.getOp().getLexeme());
+				output.append(" ");
+				output.append(boost::any_cast<std::string>(expr.getRightExpr().accept(*this)));
+				output.append(")");
+
+				return output;
+			}
+
+			
 
 	}
 }

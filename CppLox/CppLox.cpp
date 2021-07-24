@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include "Visitor.h"
+#include "Expr.h"
+#include "Interpreter.h"
 
 using namespace Lox::Interpreter;
 int main()
 {
-    //AstPrinter ast;
+    AstPrinter ast;
     
     std::unique_ptr<Expr> expression = std::make_unique<BinaryExpr>(
         std::make_unique<UnaryExpr>(
@@ -18,6 +20,8 @@ int main()
         std::make_unique<GroupingExpr>(
             std::make_unique<LiteralExpr>(
                 std::make_unique<LoxDouble>(LoxDouble(45.67)))));
+
+    std::cout << boost::any_cast<std::string>(ast.print(*expression)) << std::endl;
     
     //ast.print(*expression);
     //std::cout << le->getLiteral()->toString()<< std::endl;

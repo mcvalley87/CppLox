@@ -33,23 +33,22 @@ namespace Lox {
 
 				~ExprVisitor() = default;
 
-				virtual boost::any visitBinaryExpr(BinaryExpr& expr) = 0;
-				virtual boost::any visitGroupingExpr(GroupingExpr& expr) = 0;
-				virtual boost::any visitLiteralExpr(LiteralExpr& expr) = 0;
-				virtual boost::any visitUnaryExpr(UnaryExpr& expr) = 0;
+				virtual boost::any visitBinaryExpr(const BinaryExpr& expr) = 0;
+				virtual boost::any visitGroupingExpr(const GroupingExpr& expr) = 0;
+				virtual boost::any visitLiteralExpr(const LiteralExpr& expr) = 0;
+				virtual boost::any visitUnaryExpr(const UnaryExpr& expr) = 0;
 			};
 
 			class AstPrinter : public ExprVisitor {
 			public:
+				AstPrinter() = default;
 				~AstPrinter() = default;
 
-				boost::any visitBinaryExpr(BinaryExpr& expr) override;
-				boost::any visitGroupingExpr(GroupingExpr& expr) override;
-				boost::any visitLiteralExpr(LiteralExpr& expr) override;
-				boost::any visitUnaryExpr(UnaryExpr& expr) override;
-
-				boost::any parenthesize(std::string name, std::vector<std::unique_ptr<Expr>> vExprs);
-				boost::any print(Expr& expr);
+				boost::any visitBinaryExpr(const BinaryExpr& expr) override;
+				boost::any visitGroupingExpr(const GroupingExpr& expr) override;
+				boost::any visitLiteralExpr(const LiteralExpr& expr) override;
+				boost::any visitUnaryExpr(const UnaryExpr& expr) override;
+				boost::any print(const Expr& expr);
 			};
 
 

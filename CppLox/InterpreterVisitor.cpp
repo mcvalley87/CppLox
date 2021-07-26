@@ -17,9 +17,9 @@ namespace Lox {
 			case TokenType::LESS_EQUAL:
 				return boost::any_cast<double>(left) <= boost::any_cast<double>(right);
 			case TokenType::BANG_EQUAL:
-				return !(left == right);
+				return !isEqual(left,right);
 			case TokenType::EQUAL_EQUAL:
-				return (left == right);
+				return isEqual(left,right);
 			case TokenType::MINUS:
 				return boost::any_cast<double>(left) - boost::any_cast<double>(right);
 			case TokenType::PLUS:
@@ -64,7 +64,22 @@ namespace Lox {
 			}
 		};
 
-		bool InterpreterVisitor::isEqual(const boost::any& a, const boost::any& b) const {
+		bool InterpreterVisitor::isEqual(const boost::any a, const boost::any b) const {
+
+			if (a.type() != b.type()) {
+				return false;
+			}
+			else
+			{
+				if (a.type() == typeid(double)) {
+					return boost::any_cast<double>(a) == boost::any_cast<double>(b);
+				}
+				else if (a.type() == typeid(std::string))
+				{
+					return boost::any_cast<std::string>(a).compare(boost::any_cast<std::string>(b));
+				}
+			}
+
 			return false;
 		}
 	}

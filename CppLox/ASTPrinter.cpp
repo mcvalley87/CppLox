@@ -45,7 +45,7 @@ namespace Lox {
 					output.append("Nil");
 				}
 				else {
-					output.append(boost::any_cast<std::string>(expr.getLiteral().getValue()));
+					output.append(boost::any_cast<std::string>(expr.getLiteral().toString()));
 				}
 				
 				return output;

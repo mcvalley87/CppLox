@@ -65,7 +65,7 @@ namespace Lox {
 
 				boost::any evaluate(const Expr& expr);
 				bool isTruthy(const boost::any obj);
-				bool isEqual(const boost::any& a, const boost::any& b) const;
+				bool isEqual(const boost::any a, const boost::any b) const;
 			};
 
 

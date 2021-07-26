@@ -107,7 +107,7 @@ namespace Lox {
 
 			// don't forget the closing "
 			advance();
-			std::string value = source.substr(start + 1, current - start - 1); // remove " from each end before adding string
+			std::string value = source.substr(start + 1, current - start - 2); // remove " from each end before adding string
 			addToken(TokenType::STRING, value);
 		}
 

@@ -13,7 +13,7 @@ namespace Lox {
 				std::cout << stringify(value) << std::endl;
 			}
 			catch (RuntimeError rError) {
-				
+				std::cerr << rError.what() << std::endl;
 			}
 		}
 
@@ -26,7 +26,7 @@ namespace Lox {
 				return text;
 			}
 
-			return std::to_string(boost::any_cast<double>(object));
+			return boost::any_cast<std::string>(object);
 		}
 
 		boost::any InterpreterVisitor::visitBinaryExpr(const BinaryExpr& expr) {
@@ -59,7 +59,7 @@ namespace Lox {
 				return boost::any_cast<double>(left) + boost::any_cast<double>(right);
 			case TokenType::PLUS_PLUS:
 				checkStringOperands(expr.getOp(), left, right);
-				return boost::any_cast<std::string>(left) + boost::any_cast<std::string>(right);
+				return boost::any_cast<std::string>(left).append(boost::any_cast<std::string>(right));
 			case TokenType::SLASH:
 				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) / boost::any_cast<double>(right);

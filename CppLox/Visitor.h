@@ -5,6 +5,7 @@
 #include <boost/any.hpp>
 
 #include "Expr.h"
+#include "Error.h"
 
 namespace Lox {
 	namespace Interpreter {
@@ -56,6 +57,7 @@ namespace Lox {
 
 				~InterpreterVisitor() = default;
 
+				void interpret(const Expr& expression);
 				boost::any visitBinaryExpr(const BinaryExpr& expr) override;
 				boost::any visitGroupingExpr(const GroupingExpr& expr) override;
 				boost::any visitLiteralExpr(const LiteralExpr& expr) override;
@@ -63,9 +65,15 @@ namespace Lox {
 
 			private:
 
+				RuntimeError error(Token token, const char* message) const;
+
 				boost::any evaluate(const Expr& expr);
 				bool isTruthy(const boost::any obj);
 				bool isEqual(const boost::any a, const boost::any b) const;
+				void checkNumberOperand(Token op, const boost::any operand) const;
+				void checkNumberOperands(Token op, const boost::any left, const boost::any right) const;
+				void checkStringOperands(Token op, const boost::any left, const boost::any right) const;
+				std::string stringify(boost::any object);
 			};
 
 

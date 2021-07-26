@@ -12,6 +12,7 @@ namespace Lox {
 	namespace Interpreter {
 
 		bool Interpreter::hadError = false;
+		bool Interpreter::hadRuntimeError = false;
 
 		/// <summary>
 		/// Run through the file specified by $path and convert it into a string and then scan that string for tokens.
@@ -30,9 +31,9 @@ namespace Lox {
 			run(str);
 			// Indicate an error if there was a problem running
 			// the source provided
-			if (Interpreter::hadError) {
+			if (Interpreter::hadError) std::exit(65);
 
-			};
+			if (hadRuntimeError) std::exit(70);
 		}
 
 		void Interpreter::runPrompt() {
@@ -65,12 +66,12 @@ namespace Lox {
 			Parser parser{ tokens };
 			
 			std::unique_ptr<Expr> expression = parser.parse();
-			AstPrinter ast;
+			InterpreterVisitor interpreter;
+
+			interpreter.interpret(*expression);
 
 			if (hadError) return; // stop if syntax error
-
-			std::cout << boost::any_cast<std::string>(ast.print(*expression)) << std::endl;
-			
+			if (hadRuntimeError) return;
 		}
 	}
 }

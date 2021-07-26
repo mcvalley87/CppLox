@@ -2,6 +2,33 @@
 
 namespace Lox {
 	namespace Interpreter {
+
+		RuntimeError InterpreterVisitor::error(Token token, const char* message) const {
+			return RuntimeError(token, message);
+		}
+
+		void InterpreterVisitor::interpret(const Expr& expression) {
+			try {
+				boost::any value = evaluate(expression);
+				std::cout << stringify(value) << std::endl;
+			}
+			catch (RuntimeError rError) {
+				
+			}
+		}
+
+		std::string InterpreterVisitor::stringify(boost::any object) {
+			if (object.empty()) return "nil";
+
+			if (object.type() == typeid (double)) {
+				std::string text = std::to_string(boost::any_cast<double>(object));
+
+				return text;
+			}
+
+			return std::to_string(boost::any_cast<double>(object));
+		}
+
 		boost::any InterpreterVisitor::visitBinaryExpr(const BinaryExpr& expr) {
 			auto left = evaluate(expr.getLeftExpr());
 			auto right = evaluate(expr.getRightExpr());
@@ -9,27 +36,36 @@ namespace Lox {
 
 			switch (optype) {
 			case TokenType::GREATER:
+				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) > boost::any_cast<double>(right);
 			case TokenType::GREATER_EQUAL:
+				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) >= boost::any_cast<double>(right);
 			case TokenType::LESS:
+				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) < boost::any_cast<double>(right);
 			case TokenType::LESS_EQUAL:
+				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) <= boost::any_cast<double>(right);
 			case TokenType::BANG_EQUAL:
 				return !isEqual(left,right);
 			case TokenType::EQUAL_EQUAL:
 				return isEqual(left,right);
 			case TokenType::MINUS:
+				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) - boost::any_cast<double>(right);
 			case TokenType::PLUS:
+				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) + boost::any_cast<double>(right);
 			case TokenType::PLUS_PLUS:
+				checkStringOperands(expr.getOp(), left, right);
 				return boost::any_cast<std::string>(left) + boost::any_cast<std::string>(right);
 			case TokenType::SLASH:
+				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) / boost::any_cast<double>(right);
 			case TokenType::STAR:
-				return boost::any_cast<double>(left) / boost::any_cast<double>(right);
+				checkNumberOperands(expr.getOp(), left, right);
+				return boost::any_cast<double>(left) * boost::any_cast<double>(right);
 			}
 			
 			return nullptr;
@@ -81,6 +117,23 @@ namespace Lox {
 			}
 
 			return false;
+		}
+
+		void InterpreterVisitor::checkNumberOperand(Token op, const boost::any operand) const {
+			if (operand.type() == typeid(double)) return;
+			throw error(boost::any_cast<Token>(op), "Operand must be a number.");
+		}
+
+		void InterpreterVisitor::checkNumberOperands(Token op, const boost::any left, const boost::any right) const {
+			if (left.type() == typeid(double) && right.type() == typeid(double)) return;
+
+			throw error(op, "Operands must be numbers.");
+		}
+
+		void InterpreterVisitor::checkStringOperands(Token op, const boost::any left, const boost::any right) const {
+			if (left.type() == typeid(std::string) && right.type() == typeid(std::string)) return;
+
+			throw error(op, "Operands must be strings");
 		}
 	}
 }

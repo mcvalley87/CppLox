@@ -149,6 +149,7 @@
     <ClCompile Include="ASTPrinter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Error.h" />
     <ClInclude Include="Expr.h" />
     <ClInclude Include="Interpreter.h" />
     <ClInclude Include="Literals.h" />

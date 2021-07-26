@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "Error.h"
+#include "Expr.h"
+#include "Visitor.h"
 
 namespace Lox {
 
@@ -12,6 +15,7 @@ namespace Lox {
 
 		public:
 			static bool hadError;
+			static bool hadRuntimeError;
 			Interpreter() = default;
 			
 		
@@ -37,6 +41,11 @@ namespace Lox {
 				std::cerr << "[line" << line << "] Error" << where << ": " << message;
 				hadError = true;
 			};
+
+			static void runtimeError(RuntimeError error) {
+				std::cerr << error.what() << std::endl;
+				hadRuntimeError = true;
+			}
 		};
 	}
 }

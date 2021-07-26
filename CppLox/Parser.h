@@ -6,6 +6,7 @@
 #include "Tokens.h"
 #include "Expr.h"
 #include "Visitor.h"
+#include "Error.h"
 
 namespace Lox {
 	namespace Interpreter {

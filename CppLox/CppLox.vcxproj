@@ -142,10 +142,11 @@
     <ClCompile Include="CppLox.cpp" />
     <ClCompile Include="Expr.cpp" />
     <ClCompile Include="Interpreter.cpp" />
+    <ClCompile Include="InterpreterVisitor.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Tokens.cpp" />
-    <ClCompile Include="Visitor.cpp" />
+    <ClCompile Include="ASTPrinter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Expr.h" />

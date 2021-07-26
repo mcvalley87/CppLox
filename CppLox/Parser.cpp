@@ -3,11 +3,10 @@
 namespace Lox {
 	namespace Interpreter {
 
-		Parser::Parser(std::vector<Token> tokens) : tokens(std::move(tokens)) { std::cout << "Number of Tokens: " << tokens.size() << std::endl; };
+		Parser::Parser(std::vector<Token> tokens) : tokens(std::move(tokens)) { std::cout << "Number of Tokens: " << this->tokens.size() << std::endl; };
 
 		std::unique_ptr<Expr> Parser::parse() {
-
-			std::cout << "Number of Tokens: " << tokens.size() << std::endl;
+			std::cout << tokens.size() << std::endl;
 			try {
 				return expression();
 			}

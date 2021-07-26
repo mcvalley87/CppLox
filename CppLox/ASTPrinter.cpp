@@ -19,6 +19,7 @@ namespace Lox {
 				output.append(expr.getOp().getLexeme());
 				output.append(" ");
 				output.append(boost::any_cast<std::string>(expr.getLeftExpr().accept(*this)));
+				output.append(" ");
 				output.append(boost::any_cast<std::string>(expr.getRightExpr().accept(*this)));
 				output.append(")");
 
@@ -40,9 +41,12 @@ namespace Lox {
 
 				std::string output;
 
-				if (expr.getLiteral().toString() == "") output.append("Nil");
-
-				output.append(expr.getLiteral().toString());
+				if (expr.getLiteral().getValue().empty() == true) {
+					output.append("Nil");
+				}
+				else {
+					output.append(boost::any_cast<std::string>(expr.getLiteral().getValue()));
+				}
 				
 				return output;
 			}

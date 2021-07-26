@@ -51,6 +51,22 @@ namespace Lox {
 				boost::any print(const Expr& expr);
 			};
 
+			class InterpreterVisitor : public ExprVisitor {
+			public:
+
+				~InterpreterVisitor() = default;
+
+				boost::any visitBinaryExpr(const BinaryExpr& expr) override;
+				boost::any visitGroupingExpr(const GroupingExpr& expr) override;
+				boost::any visitLiteralExpr(const LiteralExpr& expr) override;
+				boost::any visitUnaryExpr(const UnaryExpr& expr) override;
+
+			private:
+
+				boost::any evaluate(const Expr& expr);
+				bool isTruthy(const boost::any obj);
+				bool isEqual(const boost::any& a, const boost::any& b) const;
+			};
 
 
 			

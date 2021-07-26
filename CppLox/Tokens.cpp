@@ -4,7 +4,7 @@
 namespace Lox {
 	namespace Interpreter {
 
-		TokenType Token::getType() {
+		TokenType Token::getType() const {
 			return type;
 		}
 
@@ -20,7 +20,7 @@ namespace Lox {
 			this->lexeme = lexeme;
 		}
 
-		boost::any Token::getLiteral() {
+		boost::any Token::getLiteral() const {
 			return literal;
 		}
 

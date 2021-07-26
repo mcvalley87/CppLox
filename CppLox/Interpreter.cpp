@@ -61,16 +61,16 @@ namespace Lox {
 			Scanner scanner =  Scanner(source);
 			std::vector<Token> tokens = scanner.scanTokens();
 
-			std::cout << "number of tokens scanned: " << tokens.size() << std::endl;
+			for (auto t : tokens) { std::cout << t.toString() << std::endl; }
 			Parser parser{ tokens };
-			/*
+			
 			std::unique_ptr<Expr> expression = parser.parse();
 			AstPrinter ast;
 
 			if (hadError) return; // stop if syntax error
 
 			std::cout << boost::any_cast<std::string>(ast.print(*expression)) << std::endl;
-			*/
+			
 		}
 	}
 }

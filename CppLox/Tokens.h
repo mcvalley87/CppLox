@@ -9,7 +9,7 @@ namespace Lox {
 		enum class TokenType {
 			// Single-character tokens.
 			LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
-			COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR,
+			COMMA, DOT, MINUS, PLUS, PLUS_PLUS, SEMICOLON, SLASH, STAR,
 
 			// One or two charzcter tokens.
 			BANG, BANG_EQUAL, EQUAL, EQUAL_EQUAL,
@@ -33,11 +33,12 @@ namespace Lox {
 			{TokenType::DOT,"DOT"},
 			{TokenType::MINUS,"MINUS"},
 			{TokenType::PLUS,"PLUS"},
+			{TokenType::PLUS_PLUS,"PLUS_PLUS"},
 			{TokenType::SEMICOLON,"SEMICOLON"},
 			{TokenType::SLASH,"SLASH"},
 			{TokenType::STAR,"STAR"},
 
-			// One or two charzcter tokens.
+			// One or two character tokens.
 			{TokenType::BANG,"BANG"},
 			{TokenType::BANG_EQUAL,"BANG_EQUAL"},
 			{TokenType::EQUAL,"EQUAL"},
@@ -93,13 +94,13 @@ namespace Lox {
 			//
 			// Getters and Setters
 			//
-			TokenType getType();
+			TokenType getType() const;
 			void setType(TokenType type);
 
 			std::string getLexeme() const;
 			void setLexeme(std::string& lexeme);
 
-			boost::any getLiteral();
+			boost::any getLiteral() const;
 			void setLiteral(boost::any literal);
 
 			int getLine();

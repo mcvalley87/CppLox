@@ -8,13 +8,23 @@ namespace Lox {
 			//std::cout << "Number of Tokens: " << this->tokens.size() << std::endl;
 		};
 
-		std::unique_ptr<Expr> Parser::parse() {
+		/*std::unique_ptr<Expr> Parser::parse() {
 			try {
 				return expression();
 			}
 			catch (ParseError error) {
 				return nullptr;
 			}
+		}*/
+
+		std::vector<std::unique_ptr<Stmt>> Parser::parse() {
+			std::vector<std::unique_ptr<Stmt>> statements;
+
+			while (!isAtEnd()) {
+				statements.push_back(std::move(statement()));
+			}
+
+			return std::move(statements);
 		}
 		/// <summary>
 		/// 
@@ -104,6 +114,24 @@ namespace Lox {
 			}
 
 			throw error(peek(), "Expect expression.");
+		}
+
+		std::unique_ptr<Stmt> Parser::statement() {
+			if (match(TokenType::PRINT)) return printStatement();
+
+			return expressionStatement();
+		}
+
+		std::unique_ptr<Stmt> Parser::printStatement() {
+			std::unique_ptr<Expr> value = expression();
+			consume(TokenType::SEMICOLON, "Expect ';' after value.");
+			return std::make_unique<PrintStmt>(std::move(value));
+		}
+
+		std::unique_ptr<Stmt> Parser::expressionStatement() {
+			std::unique_ptr<Expr> value = expression();
+			consume(TokenType::SEMICOLON, "Expect ';' after Expression.");
+			return std::make_unique<ExpressionStmt>(std::move(value));
 		}
 
 		template<typename ...Args>

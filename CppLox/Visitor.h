@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <cassert>
 #include <boost/any.hpp>
 
 #include "Expr.h"
@@ -16,6 +17,9 @@ namespace Lox {
 		class GroupingExpr;
 		class LiteralExpr;
 		class UnaryExpr;
+		class Stmt;
+		class PrintStmt;
+		class ExpressionStmt;
 
 			template<typename R>
 			class Visitor {
@@ -85,7 +89,7 @@ namespace Lox {
 
 				~InterpreterVisitor() = default;
 
-				void interpret(const Expr& expression);
+				void interpret(const std::vector<std::unique_ptr<Stmt>>& statements);
 			
 			private:
 				//Expression visitors
@@ -116,6 +120,11 @@ namespace Lox {
 				void checkNumberOperands(Token op, const boost::any left, const boost::any right) const;
 				void checkStringOperands(Token op, const boost::any left, const boost::any right) const;
 				std::string stringify(boost::any object);
+
+				/// <summary>
+				/// Execute statements
+				/// </summary>
+				boost::any execute(const Stmt& stmt);
 			};
 
 

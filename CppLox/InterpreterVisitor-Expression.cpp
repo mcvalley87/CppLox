@@ -7,7 +7,7 @@ namespace Lox {
 			return RuntimeError(token, message);
 		}
 
-		void InterpreterVisitor::interpret(const Expr& expression) {
+		/*void InterpreterVisitor::interpret(const Expr& expression) {
 			try {
 				boost::any value = evaluate(expression);
 				std::cout << stringify(value) << std::endl;
@@ -15,7 +15,7 @@ namespace Lox {
 			catch (RuntimeError rError) {
 				std::cerr << rError.what() << std::endl;
 			}
-		}
+		}*/
 
 		std::string InterpreterVisitor::stringify(boost::any object) {
 			if (object.empty()) return "nil";

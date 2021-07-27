@@ -146,6 +146,7 @@
     <ClCompile Include="InterpreterVisitor-Statement.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="Stmt.cpp" />
     <ClCompile Include="Tokens.cpp" />
     <ClCompile Include="ASTPrinter.cpp" />
   </ItemGroup>

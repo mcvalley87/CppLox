@@ -19,7 +19,7 @@ namespace Lox {
 
 		public:
 			Parser(std::vector<Token> tokens);
-			std::unique_ptr<Expr> parse();
+			std::vector<std::unique_ptr<Stmt>> parse();
 		private:
 
 			class ParseError : public std::runtime_error {
@@ -41,7 +41,12 @@ namespace Lox {
 			std::unique_ptr<Expr> unary(); // BANG or MINUS
 			/*Highest precedence-- primaries*/
 			std::unique_ptr<Expr> primary();
-			
+
+			/*			STATEMENTS
+			*/
+			std::unique_ptr<Stmt> statement();
+			std::unique_ptr<Stmt> printStatement();
+			std::unique_ptr<Stmt> expressionStatement();
 
 			/*Helpers*/
 			template<typename ...Args>

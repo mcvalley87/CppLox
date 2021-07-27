@@ -70,23 +70,15 @@ namespace Lox {
 			Parser parser{ tokens };
 			
 			
-			std::unique_ptr<Expr> expression = parser.parse();
-			InterpreterVisitor interpreter;
+			//std::unique_ptr<Expr> expression = parser.parse();
 
-			if (expression != nullptr) {
-				try {
-					interpreter.interpret(*expression);
-				}
-				catch (RuntimeError rError) {
-					Lox::Interpreter::Interpreter::runtimeError(rError);
-				}
-			}
-			else {
-				hadRuntimeError = true;
-			}
-
+			auto statements = parser.parse();
 
 			if (hadError) return; // stop if syntax error
+
+			InterpreterVisitor interpreter;
+			interpreter.interpret(statements);;
+			
 			if (hadRuntimeError) return;
 		}
 	}

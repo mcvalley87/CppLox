@@ -142,7 +142,8 @@
     <ClCompile Include="CppLox.cpp" />
     <ClCompile Include="Expr.cpp" />
     <ClCompile Include="Interpreter.cpp" />
-    <ClCompile Include="InterpreterVisitor.cpp" />
+    <ClCompile Include="InterpreterVisitor-Expression.cpp" />
+    <ClCompile Include="InterpreterVisitor-Statement.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Tokens.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Literals.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Scanner.h" />
+    <ClInclude Include="Stmt.h" />
     <ClInclude Include="Tokens.h" />
     <ClInclude Include="Visitor.h" />
   </ItemGroup>

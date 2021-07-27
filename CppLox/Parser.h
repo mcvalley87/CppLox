@@ -5,6 +5,7 @@
 #include<stdexcept>
 #include "Tokens.h"
 #include "Expr.h"
+#include "Stmt.h"
 #include "Visitor.h"
 #include "Error.h"
 

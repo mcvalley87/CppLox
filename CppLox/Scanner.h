@@ -28,14 +28,16 @@ namespace Lox {
 			bool match(char expected); // check to see if there is a match-- conditional advance
 			char peek(); // peek into the $source string at the current location without consuming the character
 			char peekNext(); //look athead an additional character in the $source string without consuming characters
-			char* advance(); // advance forward in source
+			char advance(); // advance forward in source
 			void addToken(TokenType type); // add a token to our list
 			void addToken(TokenType type, boost::any literal); // add a token
 			void string(); // take in string literal token
 			bool isDigit(char c); // is the character we are looking at a digit
 			void number(); // consume number literal
 		public:
-			Scanner(std::string s) : source(s), start(0), current(0), line(0) {};
+			Scanner(std::string s) : source(s), start(0), current(0), line(0) {
+				//std::cout << "The Source being read looks like\n\n" << source << " and is of length" << static_cast<int>(source.size()) << std::endl;
+			};
 			Scanner() = default;
 
 			std::vector<Token> scanTokens();// scan through source to find tokens

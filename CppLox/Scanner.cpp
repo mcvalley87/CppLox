@@ -12,7 +12,7 @@ namespace Lox {
 		/// </summary>
 		/// <returns></returns>
 		bool Scanner::isAtEnd() {
-			return unsigned(current) >= source.length();
+			return current >= static_cast<int>(source.size());
 		};
 		
 		/// <summary>
@@ -28,16 +28,16 @@ namespace Lox {
 		/// </summary>
 		/// <returns></returns>
 		char Scanner::peekNext() {
-			if (unsigned(current + 1) >= source.length()) return '\0';
+			if ((current + 1) >= static_cast<int>(source.size())) return '\0';
 			return source.at(current + 1);
 		}
 		/// <summary>
 		/// pull a token from our $source
 		/// </summary>
 		void Scanner::scanToken() {
-			char* c = advance();
+			auto c = advance();
 
-			switch (*c) {
+			switch (c) {
 			case '(': addToken(TokenType::LEFT_PAREN); break;
 			case ')': addToken(TokenType::RIGHT_PAREN); break;
 			case '{': addToken(TokenType::LEFT_BRACE); break;
@@ -81,7 +81,7 @@ namespace Lox {
 			case '"': string(); break;
 
 			default:
-				if (isDigit(*c)) {
+				if (isDigit(c)) {
 					number();
 				}
 				else {
@@ -102,13 +102,14 @@ namespace Lox {
 
 			if (isAtEnd()) { // we have reached the end of the source string without finding the end
 				Interpreter::error(line, "Unterminated string.");
-				return;
 			}
+			else {
 
-			// don't forget the closing "
-			advance();
-			std::string value = source.substr(start + 1, current - start - 2); // remove " from each end before adding string
-			addToken(TokenType::STRING, value);
+				// don't forget the closing "
+				advance();
+				std::string value = source.substr(start + 1, current - start - 2); // remove " from each end before adding string
+				addToken(TokenType::STRING, value);
+			}
 		}
 
 		/// <summary>
@@ -150,17 +151,16 @@ namespace Lox {
 			if (isAtEnd()) return false;
 			if (source.at(current) != expected) return false;
 
-			current++;
+			++current;
 			return true;
-			return false;
 		}; // check to see if there is a match-- conditional advance
 		
 		/// <summary>
 		/// Advance forward into the $source string
 		/// </summary>
 		/// <returns>the next character in the $source string</returns>
-		char* Scanner::advance() {
-			return &source.at(current++);
+		char Scanner::advance() {
+			return source.at(current++);
 		};
 		/// <summary>
 		/// Add a token to our list
@@ -184,7 +184,6 @@ namespace Lox {
 		/// <returns></returns>
 		std::vector<Token> Scanner::scanTokens() {
 			while (!isAtEnd()) {
-				// we are at the beginning of our next lexeme
 				start = current;
 				scanToken();
 			}

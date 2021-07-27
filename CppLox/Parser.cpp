@@ -3,10 +3,12 @@
 namespace Lox {
 	namespace Interpreter {
 
-		Parser::Parser(std::vector<Token> tokens) : tokens(std::move(tokens)) { std::cout << "Number of Tokens: " << this->tokens.size() << std::endl; };
+		Parser::Parser(std::vector<Token> tokens) : tokens(std::move(tokens)) {
+			//std::cout << "Starting Parser..." << std::endl;
+			//std::cout << "Number of Tokens: " << this->tokens.size() << std::endl;
+		};
 
 		std::unique_ptr<Expr> Parser::parse() {
-			std::cout << tokens.size() << std::endl;
 			try {
 				return expression();
 			}
@@ -52,7 +54,7 @@ namespace Lox {
 		std::unique_ptr<Expr> Parser::term() {
 			auto expr = factor();
 
-			while (match(TokenType::MINUS, TokenType::PLUS)) {
+			while (match(TokenType::MINUS, TokenType::PLUS, TokenType::PLUS_PLUS)) {
 				auto op = previous();
 				auto right = factor();
 
@@ -178,8 +180,8 @@ namespace Lox {
 
 		Parser::ParseError Parser::error(Token token, const char* message) const {
 			
-			//Lox::Interpreter::Error(token, message);
-			throw ParseError();
+			Lox::Interpreter::Interpreter::error(token, message);
+			throw ParseError{};
 		}
 	}
 }

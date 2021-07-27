@@ -37,8 +37,19 @@ namespace Lox {
 			static void error(int line, std::string message) {
 				report(line, "", message);
 			}
+
+			static void error(Token token, std::string message) {
+				if (token.getType() == TokenType::FILE_END) {
+					report(token.getLine(), " at end", message);
+				}
+				else {
+					report(token.getLine(), token.getLexeme(), message);
+				}
+				hadError = false;
+			}
+
 			static void report(int line, std::string where, std::string message) {
-				std::cerr << "[line" << line << "] Error" << where << ": " << message;
+				std::cerr << "[line" << line << "] Error" << where << ": " << message << std::endl;
 				hadError = true;
 			};
 
@@ -46,6 +57,7 @@ namespace Lox {
 				std::cerr << error.what() << std::endl;
 				hadRuntimeError = true;
 			}
+
 		};
 	}
 }

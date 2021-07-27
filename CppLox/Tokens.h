@@ -103,7 +103,7 @@ namespace Lox {
 			boost::any getLiteral() const;
 			void setLiteral(boost::any literal);
 
-			int getLine();
+			int getLine() const;
 			void setLine(int line);
 
 			/*

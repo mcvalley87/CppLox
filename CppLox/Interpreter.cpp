@@ -41,7 +41,7 @@ namespace Lox {
 			for (;;) {
 				std::string line;
 
-				std::cin >> line;
+				std::getline(std::cin, line);
 
 				if (line.empty()) { // 
 					break;
@@ -62,13 +62,29 @@ namespace Lox {
 			Scanner scanner =  Scanner(source);
 			std::vector<Token> tokens = scanner.scanTokens();
 
-			for (auto t : tokens) { std::cout << t.toString() << std::endl; }
+			//std::cout << "Result of Scanning..." << std::endl;
+			//for (auto t : tokens) { std::cout << t.toString() << std::endl; }
+
+			//std::cout << "--------------" << std::endl;
+
 			Parser parser{ tokens };
+			
 			
 			std::unique_ptr<Expr> expression = parser.parse();
 			InterpreterVisitor interpreter;
 
-			interpreter.interpret(*expression);
+			if (expression != nullptr) {
+				try {
+					interpreter.interpret(*expression);
+				}
+				catch (RuntimeError rError) {
+					Lox::Interpreter::Interpreter::runtimeError(rError);
+				}
+			}
+			else {
+				hadRuntimeError = true;
+			}
+
 
 			if (hadError) return; // stop if syntax error
 			if (hadRuntimeError) return;

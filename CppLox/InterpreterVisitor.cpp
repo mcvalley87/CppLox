@@ -22,6 +22,7 @@ namespace Lox {
 
 			if (object.type() == typeid (double)) {
 				std::string text = std::to_string(boost::any_cast<double>(object));
+				text = text.substr(0, text.length() - 6);
 
 				return text;
 			}
@@ -33,6 +34,9 @@ namespace Lox {
 			auto left = evaluate(expr.getLeftExpr());
 			auto right = evaluate(expr.getRightExpr());
 			TokenType optype = expr.getOp().getType();
+
+			//std::cout << "Value of left string operand is \"" << boost::any_cast<std::string>(left) << "\"\n";
+			//std::cout << "Value of right string operand is \"" << boost::any_cast<std::string>(right) << "\"\n";
 
 			switch (optype) {
 			case TokenType::GREATER:
@@ -59,7 +63,7 @@ namespace Lox {
 				return boost::any_cast<double>(left) + boost::any_cast<double>(right);
 			case TokenType::PLUS_PLUS:
 				checkStringOperands(expr.getOp(), left, right);
-				return boost::any_cast<std::string>(left).append(boost::any_cast<std::string>(right));
+				return boost::any_cast<std::string>(left) + boost::any_cast<std::string>(right);
 			case TokenType::SLASH:
 				checkNumberOperands(expr.getOp(), left, right);
 				return boost::any_cast<double>(left) / boost::any_cast<double>(right);

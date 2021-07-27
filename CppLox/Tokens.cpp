@@ -28,6 +28,12 @@ namespace Lox {
 			this->literal = literal;
 		}
 
+		int Token::getLine() const { return line; }
+
+		void Token::setLine(int line) {
+			this->line = line;
+		}
+
 		std::string Token::toString() {
 			return  enumStrings.at(type);
 		}

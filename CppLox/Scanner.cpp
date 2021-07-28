@@ -2,6 +2,7 @@
 #include "Interpreter.h"
 #include <iostream>
 #include <sstream>
+#include <cctype>
 
 namespace Lox {
 
@@ -84,13 +85,34 @@ namespace Lox {
 				if (isDigit(c)) {
 					number();
 				}
-				else {
+				else if (std::isalpha(c) || c == '_') {
+					identifier();
+				} else {
 					Lox::Interpreter::Interpreter::error(line, "Unexpected Character");
 				}
 				break;
 			}
 		};
 
+		/// <summary>
+		/// 
+		/// </summary>
+		void Scanner::identifier() {
+
+			while (isDigit(peek()) || std::isalpha(peek()) || peek() == '_') {
+				advance();
+			}
+
+			const auto text = source.substr(start, current - start);
+			const auto it = keywords.find(text); // would use switch but cannot use strings in a switch
+
+			if (it != keywords.end()) { // initialized elsewhere to avoid need of C++/17 flag
+				addToken(it->second);
+			}
+			else {
+				addToken(TokenType::IDENTIFIER);
+			}
+		}
 		/// <summary>
 		/// If we are dealing with a string literal, pull the entire string into a token.
 		/// </summary>

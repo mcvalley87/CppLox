@@ -21,10 +21,10 @@ namespace Lox {
 			std::vector<std::unique_ptr<Stmt>> statements;
 
 			while (!isAtEnd()) {
-				statements.push_back(std::move(statement()));
+				statements.push_back(statement());
 			}
 
-			return std::move(statements);
+			return statements;
 		}
 		/// <summary>
 		/// 
@@ -117,9 +117,15 @@ namespace Lox {
 		}
 
 		std::unique_ptr<Stmt> Parser::statement() {
-			if (match(TokenType::PRINT)) return printStatement();
+			try {
+				if (match(TokenType::PRINT)) return printStatement();
 
-			return expressionStatement();
+				return expressionStatement();
+			}
+			catch (ParseError pError) {
+				synchronize();
+				return nullptr;
+			}
 		}
 
 		std::unique_ptr<Stmt> Parser::printStatement() {

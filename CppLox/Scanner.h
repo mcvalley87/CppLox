@@ -10,6 +10,25 @@ namespace Lox {
 
 	namespace Interpreter {
 
+
+		static const std::unordered_map<std::string,TokenType> keywords = {
+		{"and", TokenType::AND},
+		{"class", TokenType::CLASS},
+		{"else", TokenType::ELSE},
+		{"false", TokenType::FALSE},
+		{"for", TokenType::FOR},
+		{"fun", TokenType::FUN},
+		{"if", TokenType::IF},
+		{"nil", TokenType::NIL},
+		{"or", TokenType::OR},
+		{"print", TokenType::PRINT},
+		{"return", TokenType::RETURN},
+		{"super", TokenType::SUPER},
+		{"this", TokenType::THIS},
+		{"true", TokenType::TRUE},
+		{"var", TokenType::VAR},
+		{"while", TokenType::WHILE},
+		};
 		/// <summary>
 		/// Scanner class-- this class holds the methods and members necessary to read through a particular input string
 		/// and to tokenize said input string for future input into parsers stage of interpretation
@@ -34,6 +53,7 @@ namespace Lox {
 			void string(); // take in string literal token
 			bool isDigit(char c); // is the character we are looking at a digit
 			void number(); // consume number literal
+			void identifier();
 		public:
 			Scanner(std::string s) : source(s), start(0), current(0), line(0) {
 				//std::cout << "The Source being read looks like\n\n" << source << " and is of length" << static_cast<int>(source.size()) << std::endl;

@@ -46,5 +46,11 @@ namespace Lox {
 
 			boost::any UnaryExpr::accept(Visitor<boost::any>& visitor) const { return visitor.visitUnaryExpr(*this); }
 
+			// Variable Access Expressions
+
+			VariableExpr::VariableExpr(Token name) : name(name) { }
+
+			boost::any VariableExpr::accept(Visitor<boost::any>& visitor) const { return visitor.visitVariableExpr(*this); }
+
 	}
 }

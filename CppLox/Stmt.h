@@ -35,5 +35,18 @@ namespace Lox {
 		private:
 			std::unique_ptr<Expr> expr;
 		};
+
+		class VariableStmt : public Stmt {
+		public:
+			VariableStmt(Token name, std::unique_ptr<Expr> init);
+			boost::any accept(StmtVisitor<boost::any>& visitor) const override;
+
+			const Expr& getExpr() const { return *expr; }
+			const Token& getName() const { return name; }
+
+		private:
+			std::unique_ptr<Expr> init;
+			Token name;
+		};
 	}
 }

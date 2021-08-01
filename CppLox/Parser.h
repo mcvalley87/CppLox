@@ -48,6 +48,10 @@ namespace Lox {
 			std::unique_ptr<Stmt> printStatement();
 			std::unique_ptr<Stmt> expressionStatement();
 
+			/*          DECLARATIONS
+			*/	
+			std::unique_ptr<Stmt> declaration();
+
 			/*Helpers*/
 			template<typename ...Args>
 			bool match(Args...args); // match to particular set of tokens

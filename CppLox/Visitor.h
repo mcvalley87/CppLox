@@ -17,6 +17,7 @@ namespace Lox {
 		class GroupingExpr;
 		class LiteralExpr;
 		class UnaryExpr;
+		class VariableExpr;
 		class Stmt;
 		class PrintStmt;
 		class ExpressionStmt;
@@ -32,6 +33,7 @@ namespace Lox {
 				virtual R visitGroupingExpr(const GroupingExpr& expr) = 0;
 				virtual R visitLiteralExpr(const LiteralExpr& expr) = 0;
 				virtual R visitUnaryExpr(const UnaryExpr& expr) = 0;
+				virtual R visitVariableExpr(const VariableExpr& expr) = 0;
 			};
 
 			class ExprVisitor : public Visitor<boost::any> {
@@ -43,6 +45,7 @@ namespace Lox {
 				virtual boost::any visitGroupingExpr(const GroupingExpr& expr) = 0;
 				virtual boost::any visitLiteralExpr(const LiteralExpr& expr) = 0;
 				virtual boost::any visitUnaryExpr(const UnaryExpr& expr) = 0;
+				virtual boost::any visitVariableExpr(const VariableExpr& expr) = 0;
 			};
 
 			class AstPrinter : public ExprVisitor {
@@ -54,6 +57,7 @@ namespace Lox {
 				boost::any visitGroupingExpr(const GroupingExpr& expr) override;
 				boost::any visitLiteralExpr(const LiteralExpr& expr) override;
 				boost::any visitUnaryExpr(const UnaryExpr& expr) override;
+				boost::any visitVariableExpr(const VariableExpr& expr) override;
 				boost::any print(const Expr& expr);
 			};
 			///
@@ -69,6 +73,7 @@ namespace Lox {
 				// set to zero to avoid linker problem encountered
 				virtual R visitPrintStmt(const PrintStmt& stmt) = 0;
 				virtual R visitExpressionStmt(const ExpressionStmt& stmt) = 0;
+				virtual R visitVariableStmt(const VariableStmt& stmt) = 0;
 			};
 
 			class PrimeStmtVisitor : public StmtVisitor<boost::any> {
@@ -77,8 +82,9 @@ namespace Lox {
 
 			public:
 				// set to zero to avoid linker problem encountered
-				virtual boost::any visitPrintStmt(const PrintStmt & stmt) = 0;
-				virtual boost::any visitExpressionStmt(const ExpressionStmt & stmt) = 0;
+				virtual boost::any visitPrintStmt(const PrintStmt& stmt) = 0;
+				virtual boost::any visitExpressionStmt(const ExpressionStmt& stmt) = 0;
+				virtual boost::any visitVariableStmt(const VariableStmt& stmt) = 0;
 			};
 			///
 			///
@@ -97,12 +103,17 @@ namespace Lox {
 				boost::any visitGroupingExpr(const GroupingExpr& expr) override;
 				boost::any visitLiteralExpr(const LiteralExpr& expr) override;
 				boost::any visitUnaryExpr(const UnaryExpr& expr) override;
+				boost::any visitVariableExpr(const VariableExpr& expr) override;
 
 				//Statement visitors
 				boost::any visitPrintStmt(const PrintStmt& stmt) override;
 				boost::any visitExpressionStmt(const ExpressionStmt& stmt) override;
+				boost::any visitVariableStmt(const VariableStmt& stmt) override;
 
 			private:
+
+				//global environment
+				Env globalEnv;
 
 				/// <summary>
 				/// Runtime error handling

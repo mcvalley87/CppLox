@@ -6,6 +6,7 @@
 #include "Error.h"
 #include "Expr.h"
 #include "Visitor.h"
+#include "Env.h"
 
 namespace Lox {
 

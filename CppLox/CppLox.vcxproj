@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CppLox.cpp" />
+    <ClCompile Include="Env.cpp" />
     <ClCompile Include="Expr.cpp" />
     <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="InterpreterVisitor-Expression.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="ASTPrinter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Env.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="Expr.h" />
     <ClInclude Include="Interpreter.h" />

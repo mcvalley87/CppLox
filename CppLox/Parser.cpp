@@ -21,7 +21,7 @@ namespace Lox {
 			std::vector<std::unique_ptr<Stmt>> statements;
 
 			while (!isAtEnd()) {
-				statements.push_back(statement());
+				statements.push_back(declaration());
 			}
 
 			return statements;
@@ -107,6 +107,8 @@ namespace Lox {
 
 			if (match(TokenType::NUMBER)) return std::make_unique<LiteralExpr>(std::make_unique<LoxDouble>(boost::any_cast<double>(previous().getLiteral())));
 
+			if (match(TokenType::IDENTIFIER)) return std::make_unique<VariableExpr>(previous());
+
 			if (match(TokenType::LEFT_PAREN)) {
 				auto expr = expression();
 				consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.");
@@ -115,6 +117,8 @@ namespace Lox {
 
 			throw error(peek(), "Expect expression.");
 		}
+
+	//		STATEMENT RELATED PARSING
 
 		std::unique_ptr<Stmt> Parser::statement() {
 			try {
@@ -139,6 +143,34 @@ namespace Lox {
 			consume(TokenType::SEMICOLON, "Expect ';' after Expression.");
 			return std::make_unique<ExpressionStmt>(std::move(value));
 		}
+
+		//		DECLARATION RELATED PARSING
+
+		std::unique_ptr<Stmt> Parser::declaration() {
+			try {
+				if (match(TokenType::VAR)) return varDeclaration();
+
+				return statement();
+			}
+			catch (ParseError pErr) {
+				synchronize(); // clear out that callstack
+				return nullptr;
+			}
+		}
+
+		std::unique_ptr<Stmt> Parser::varDeclaration() {
+			Token name = consume(TokenType::IDENTIFIER, "Expect variable name.");
+
+			std::unique_ptr<Expr> expr = nullptr;
+
+			if (match(TokenType::EQUAL)) expr = expression();
+
+			consume(TokenType::SEMICOLON, "Expect ';' after variable declaration.");
+			return std::make_unique<VariableStmt>(name, std::move(expr));
+		}
+
+		// HELPER FUNCTIONS
+
 
 		template<typename ...Args>
 		bool Parser::match(Args...args) {

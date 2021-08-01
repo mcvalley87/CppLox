@@ -51,5 +51,17 @@ namespace Lox {
 			return nullptr;
 		}
 
+		boost::any InterpreterVisitor::visitVariableStmt(const VariableStmt& stmt) {
+
+			auto value;
+
+			if (stmt.getExpr() != nullptr) {
+				value = evaluate(stmt.getExpr());
+			}
+
+			globalEnv.define(stmt.getName().getLexeme(), value);
+			return nullptr;
+		}
+
 	}
 }

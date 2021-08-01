@@ -93,7 +93,17 @@ namespace Lox {
 			return nullptr;
 		}
 
+		boost::any InterpreterVisitor::visitVariableExpr(const VariableExpr& expr) {
+
+			return globalEnv.get(expr.getVar());
+		}
 		boost::any InterpreterVisitor::evaluate(const Expr& expr) { return expr.accept(*this); }
+
+
+		/* HELPER FUNCTIONS
+				Functions here are for the purpose of helping out the interpreter.
+
+		*/
 
 		bool InterpreterVisitor::isTruthy(boost::any obj) {
 			try {
@@ -104,6 +114,7 @@ namespace Lox {
 			}
 		};
 
+		
 		bool InterpreterVisitor::isEqual(const boost::any a, const boost::any b) const {
 
 			if (a.type() != b.type()) {

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlockStmt.cpp" />
     <ClCompile Include="CppLox.cpp" />
     <ClCompile Include="Env.cpp" />
     <ClCompile Include="Expr.cpp" />

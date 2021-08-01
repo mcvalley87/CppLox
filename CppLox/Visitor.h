@@ -24,6 +24,7 @@ namespace Lox {
 		class PrintStmt;
 		class ExpressionStmt;
 		class VariableStmt;
+		class BlockStmt;
 
 			template<typename R>
 			class Visitor {
@@ -79,6 +80,7 @@ namespace Lox {
 				virtual R visitPrintStmt(const PrintStmt& stmt) = 0;
 				virtual R visitExpressionStmt(const ExpressionStmt& stmt) = 0;
 				virtual R visitVariableStmt(const VariableStmt& stmt) = 0;
+				virtual R visitBlockStmt(const BlockStmt& stmt) = 0;
 			};
 
 			class PrimeStmtVisitor : public StmtVisitor<boost::any> {
@@ -90,6 +92,7 @@ namespace Lox {
 				virtual boost::any visitPrintStmt(const PrintStmt& stmt) = 0;
 				virtual boost::any visitExpressionStmt(const ExpressionStmt& stmt) = 0;
 				virtual boost::any visitVariableStmt(const VariableStmt& stmt) = 0;
+				virtual boost::any visitBlockStmt(const BlockStmt& stmt) = 0;
 			};
 			///
 			///
@@ -115,10 +118,10 @@ namespace Lox {
 				boost::any visitPrintStmt(const PrintStmt& stmt) override;
 				boost::any visitExpressionStmt(const ExpressionStmt& stmt) override;
 				boost::any visitVariableStmt(const VariableStmt& stmt) override;
-
+				boost::any visitBlockStmt(const BlockStmt& stmt) override;
 			private:
 
-				//global environment
+				//global environment by default
 				Env gEnv;
 
 				/// <summary>
@@ -142,6 +145,7 @@ namespace Lox {
 				/// Execute statements
 				/// </summary>
 				boost::any execute(const Stmt& stmt);
+				boost::any executeBlock(const std::vector<std::unique_ptr<Stmt>>& stmts, const Env& lEnv);
 			};
 
 

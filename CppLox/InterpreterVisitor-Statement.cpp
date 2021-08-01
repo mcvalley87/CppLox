@@ -1,5 +1,6 @@
 #include "Visitor.h"
 
+
 namespace Lox {
 	namespace Interpreter {
 
@@ -27,7 +28,29 @@ namespace Lox {
 		/// <returns></returns>
 		boost::any InterpreterVisitor::execute(const Stmt& stmt) { return stmt.accept(*this); }
 
+		/// <summary>
+		/// Executes a block of statements
+		/// </summary>
+		/// <param name="stmts"></param>
+		/// <param name="lEnv"></param>
+		/// <returns></returns>
+		boost::any InterpreterVisitor::executeBlock(const std::vector<std::unique_ptr<Stmt>>& stmts, const Env& lEnv) {
+			auto previous = gEnv;
 
+			try {
+				gEnv = lEnv;
+
+				for (auto stmt : stmts) {
+					execute(*stmt);
+				}
+			}
+			catch (RuntimeError rErr) {
+				gEnv = previous;
+			}
+			gEnv = previous;
+
+			return nullptr;
+		}
 		/// <summary>
 		/// If we have a print statement then we just need to evaluate the expression and then print its result
 		/// </summary>
@@ -55,13 +78,21 @@ namespace Lox {
 
 			boost::any value;
 
-			if (!(stmt.getExpr() == nullptr)) {
+			//if (!(stmt.getExpr() == nullptr)) {
 				value = evaluate(stmt.getExpr());
-			}
+			//}
 
 			gEnv.define(stmt.getName().getLexeme(), value);
 			return nullptr;
 		}
+
+		boost::any InterpreterVisitor::visitBlockStmt(const BlockStmt& stmt) {
+			Env blockEnv{gEnv};
+			executeBlock(stmt.getStatements(),blockEnv);
+
+			return nullptr;
+		}
+
 
 	}
 }

@@ -141,6 +141,7 @@ namespace Lox {
 		std::unique_ptr<Stmt> Parser::statement() {
 			try {
 				if (match(TokenType::PRINT)) return printStatement();
+				if (match(TokenType::LEFT_BRACE)) return blockStatement();
 
 				return expressionStatement();
 			}
@@ -160,6 +161,14 @@ namespace Lox {
 			auto value = expression();
 			consume(TokenType::SEMICOLON, "Expect ';' after Expression.");
 			return std::make_unique<ExpressionStmt>(std::move(value));
+		}
+
+		std::unique_ptr<Stmt> Parser::blockStatement() {
+			std::vector<std::unique_ptr<Stmt>> statements{};
+
+			while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) statements.push_back(declaration());
+			consume(TokenType::RIGHT_BRACE, "Expect '}' after block.");
+			return std::make_unique<BlockStmt>(std::move(statements));
 		}
 
 		//		DECLARATION RELATED PARSING

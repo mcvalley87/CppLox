@@ -13,14 +13,14 @@ namespace Lox {
 		class Env {
 		public:
 			Env() = default;
-			Env(std::unique_ptr<Env> enclosing);
+			Env(Env& enclosing);
 
-			void define(std::string name, boost::any& value);
+			void define(std::string name, boost::any value);
 			void assign(Token name, boost::any value);
 			boost::any get(Token name); 
 		private:
-			std::unordered_map<std::string, boost::any&> values;
-			std::unique_ptr<Env> enclosing;
+			std::unordered_map<std::string, boost::any> values;
+			Env& enclosing;
 		};
 	}
 }

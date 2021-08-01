@@ -48,5 +48,14 @@ namespace Lox {
 			std::unique_ptr<Expr> init;
 			Token name;
 		};
+
+		class BlockStmt : public Stmt {
+		public:
+			BlockStmt(std::vector<std::unique_ptr<Stmt>> stmts);
+			boost::any accept(StmtVisitor<boost::any>& visitor) const override;
+			const std::vector<std::unique_ptr<Stmt>>& getStatements() { return stmts; }
+		private:
+			std::vector<std::unique_ptr<Stmt>> stmts;
+		};
 	}
 }

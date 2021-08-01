@@ -5,7 +5,7 @@ namespace Lox {
 
 		Env::Env(std::unique_ptr<Env> enclosing) : enclosing(std::move(enclosing)) {};
 
-		void Env::define(std::string name, boost::any& value) {
+		void Env::define(std::string name, boost::any value) {
 			values[name] = value;
 		}
 

@@ -21,7 +21,7 @@ namespace Lox {
 		}
 
 		VariableStmt::VariableStmt(Token name, std::unique_ptr<Expr> init) : name(name), init(std::move(init)) {
-			assert(this->expr != nullptr);
+			assert(this->init != nullptr);
 		}
 
 		boost::any VariableStmt::accept(StmtVisitor<boost::any>& visitor) const {

@@ -94,8 +94,12 @@ namespace Lox {
 		}
 
 		boost::any InterpreterVisitor::visitVariableExpr(const VariableExpr& expr) {
+			return gEnv.get(expr.getVar());
+		}
 
-			return globalEnv.get(expr.getVar());
+		boost::any InterpreterVisitor::visitAssignExpr(const AssignExpr& expr) {
+			boost::any value = evaluate(expr.getValue());
+			return nullptr;
 		}
 		boost::any InterpreterVisitor::evaluate(const Expr& expr) { return expr.accept(*this); }
 

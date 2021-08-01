@@ -32,6 +32,7 @@ namespace Lox {
 
 			/* Lowest precedence -- Expression*/
 			std::unique_ptr<Expr> expression();
+			std::unique_ptr<Expr> assignment();
 			/* Binary ops*/
 			std::unique_ptr<Expr> equality(); // BANG_EQUAL or EQUAL_EQUAL
 			std::unique_ptr<Expr> comparison(); // GREATER, GREATER_EQUAL, LESS,  LESS_EQUAL
@@ -51,6 +52,7 @@ namespace Lox {
 			/*          DECLARATIONS
 			*/	
 			std::unique_ptr<Stmt> declaration();
+			std::unique_ptr<Stmt> varDeclaration();
 
 			/*Helpers*/
 			template<typename ...Args>

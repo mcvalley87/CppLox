@@ -1,21 +1,37 @@
 #include "Env.h"
-
+#include "Error.h"
 namespace Lox {
 	namespace Interpreter {
 
-		Env::Env() {}
+		Env::Env(std::unique_ptr<Env> enclosing) : enclosing(std::move(enclosing)) {};
 
-		void Env::define(std::string name, boost::any& value); {
+		void Env::define(std::string name, boost::any& value) {
 			values[name] = value;
 		}
 
-		boost::any Env::get(Token name); {
-			if (values.find(name.getLexeme())) {
+		void Env::assign(Token name, boost::any value) {
+			if (values.count(name.getLexeme()) > 0) {
+				values[boost::any_cast<std::string>(name.getLexeme())] = value;
+				return;
+			}
+
+			if (enclosing != nullptr) {
+				enclosing->assign(name, value);
+				return;
+			}
+
+			std::string errorMessage = "Undefined variable '" + name.getLexeme() + "'.";
+			throw new RuntimeError(name, errorMessage.c_str());
+		}
+		boost::any Env::get(Token name) {
+			if (values.count(name.getLexeme())) {
 				return values[name.getLexeme()];
 			}
 
+			if (enclosing != nullptr) return enclosing->get(name);
+
 			std::string error = "Undefined variable '" + name.getLexeme() + "'.";
-			throw RuntimeError(name, error);
+			throw RuntimeError(name, error.c_str());
 		}
 	}
 }

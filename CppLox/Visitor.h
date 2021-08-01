@@ -8,6 +8,7 @@
 #include "Expr.h"
 #include "Error.h"
 #include "Stmt.h"
+#include "Env.h"
 
 namespace Lox {
 	namespace Interpreter {
@@ -18,9 +19,11 @@ namespace Lox {
 		class LiteralExpr;
 		class UnaryExpr;
 		class VariableExpr;
+		class AssignExpr;
 		class Stmt;
 		class PrintStmt;
 		class ExpressionStmt;
+		class VariableStmt;
 
 			template<typename R>
 			class Visitor {
@@ -34,6 +37,7 @@ namespace Lox {
 				virtual R visitLiteralExpr(const LiteralExpr& expr) = 0;
 				virtual R visitUnaryExpr(const UnaryExpr& expr) = 0;
 				virtual R visitVariableExpr(const VariableExpr& expr) = 0;
+				virtual R visitAssignExpr(const AssignExpr& expr) = 0;
 			};
 
 			class ExprVisitor : public Visitor<boost::any> {
@@ -46,6 +50,7 @@ namespace Lox {
 				virtual boost::any visitLiteralExpr(const LiteralExpr& expr) = 0;
 				virtual boost::any visitUnaryExpr(const UnaryExpr& expr) = 0;
 				virtual boost::any visitVariableExpr(const VariableExpr& expr) = 0;
+				virtual boost::any visitAssignExpr(const AssignExpr& expr) = 0;
 			};
 
 			class AstPrinter : public ExprVisitor {
@@ -104,6 +109,7 @@ namespace Lox {
 				boost::any visitLiteralExpr(const LiteralExpr& expr) override;
 				boost::any visitUnaryExpr(const UnaryExpr& expr) override;
 				boost::any visitVariableExpr(const VariableExpr& expr) override;
+				boost::any visitAssignExpr(const AssignExpr& expr) override;
 
 				//Statement visitors
 				boost::any visitPrintStmt(const PrintStmt& stmt) override;
@@ -113,7 +119,7 @@ namespace Lox {
 			private:
 
 				//global environment
-				Env globalEnv;
+				Env gEnv;
 
 				/// <summary>
 				/// Runtime error handling

@@ -52,5 +52,13 @@ namespace Lox {
 
 			boost::any VariableExpr::accept(Visitor<boost::any>& visitor) const { return visitor.visitVariableExpr(*this); }
 
+			/// <summary>
+			/// Assignments
+			/// </summary>
+			/// <param name="name"></param>
+			/// <param name="value"></param>
+			AssignExpr::AssignExpr(Token name, std::unique_ptr<Expr> value) : name(name), value(std::move(value)) {}
+			boost::any AssignExpr::accept(Visitor<boost::any>& visitor) const { return visitor.visitAssignExpr(*this); }
+
 	}
 }

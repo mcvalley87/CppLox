@@ -30,7 +30,25 @@ namespace Lox {
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		std::unique_ptr<Expr> Parser::expression() { return equality(); }
+		std::unique_ptr<Expr> Parser::expression() { return assignment(); }
+
+		std::unique_ptr<Expr> Parser::assignment() {
+			auto expr = equality();
+
+			if (match(TokenType::EQUAL)) {
+				auto equals = previous();
+				auto value = assignment();
+
+				if (typeid(expr) == typeid(std::unique_ptr<VariableExpr>)) {
+					auto name = ((VariableExpr&)*expr).getVar();
+					return std::make_unique<AssignExpr>(name, std::move(value));
+				}
+
+				//error(TokenType::EQUALS, "Invalid assignment target.");
+			}
+
+			return expr;
+		}
 
 		std::unique_ptr<Expr> Parser::equality() {
 			auto expr = comparison(); // equality is comparison ( ( "!=" | "==" ) comparison )*;

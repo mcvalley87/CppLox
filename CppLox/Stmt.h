@@ -41,7 +41,7 @@ namespace Lox {
 			VariableStmt(Token name, std::unique_ptr<Expr> init);
 			boost::any accept(StmtVisitor<boost::any>& visitor) const override;
 
-			const Expr& getExpr() const { return *expr; }
+			const Expr& getExpr() const { return *init; }
 			const Token& getName() const { return name; }
 
 		private:

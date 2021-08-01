@@ -129,13 +129,13 @@ namespace Lox {
 		}
 
 		std::unique_ptr<Stmt> Parser::printStatement() {
-			std::unique_ptr<Expr> value = expression();
+			auto value = expression();
 			consume(TokenType::SEMICOLON, "Expect ';' after value.");
 			return std::make_unique<PrintStmt>(std::move(value));
 		}
 
 		std::unique_ptr<Stmt> Parser::expressionStatement() {
-			std::unique_ptr<Expr> value = expression();
+			auto value = expression();
 			consume(TokenType::SEMICOLON, "Expect ';' after Expression.");
 			return std::make_unique<ExpressionStmt>(std::move(value));
 		}
@@ -188,7 +188,7 @@ namespace Lox {
 		void Parser::synchronize() {
 		
 			advance();
-
+			std::cout << "hello there" << std::endl;
 			while (!isAtEnd()) {
 				if (previous().getType() == TokenType::SEMICOLON) {
 					return;

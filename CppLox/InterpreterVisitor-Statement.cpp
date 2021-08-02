@@ -34,21 +34,14 @@ namespace Lox {
 		/// <param name="stmts"></param>
 		/// <param name="lEnv"></param>
 		/// <returns></returns>
-		boost::any InterpreterVisitor::executeBlock(const std::vector<std::unique_ptr<Stmt>>& stmts, const Env& lEnv) {
-			auto previous = gEnv;
+		boost::any InterpreterVisitor::executeBlock(const std::vector<std::unique_ptr<Stmt>>& stmts, std::unique_ptr<Env> lEnv) {
 
-			try {
-				gEnv = lEnv;
+			EnterEnviromentGuard ee{ *this, std::move(lEnv) };
 
-				for (auto stmt : stmts) {
-					execute(*stmt);
-				}
+			for (const auto& stmtPtr : stmts) {
+				assert(stmtPtr != nullptr);
+				execute(*stmtPtr);
 			}
-			catch (RuntimeError rErr) {
-				gEnv = previous;
-			}
-			gEnv = previous;
-
 			return nullptr;
 		}
 		/// <summary>
@@ -82,17 +75,30 @@ namespace Lox {
 				value = evaluate(stmt.getExpr());
 			//}
 
-			gEnv.define(stmt.getName().getLexeme(), value);
+			gEnv->define(stmt.getName().getLexeme(), value);
 			return nullptr;
 		}
 
 		boost::any InterpreterVisitor::visitBlockStmt(const BlockStmt& stmt) {
-			Env blockEnv{gEnv};
-			executeBlock(stmt.getStatements(),blockEnv);
+			//auto blockEnv = std::make_unique<Env>(gEnv.get());
+			executeBlock(stmt.getStatements(),std::move(gEnv));
 
 			return nullptr;
 		}
 
+		///
+		///
+		/// 
+		InterpreterVisitor::EnterEnviromentGuard::EnterEnviromentGuard(InterpreterVisitor& i, std::unique_ptr<Env> env)
+			: i(i)
+		{
+			previous = std::move(i.gEnv);
+			i.gEnv = std::move(env);
+		}
 
+		InterpreterVisitor::EnterEnviromentGuard::~EnterEnviromentGuard()
+		{
+			i.gEnv = std::move(previous);
+		}
 	}
 }

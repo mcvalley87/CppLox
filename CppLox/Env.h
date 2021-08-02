@@ -10,17 +10,18 @@
 namespace Lox {
 	namespace Interpreter {
 
+		class Token;
+
 		class Env {
 		public:
-			Env() = default;
-			Env(Env& enclosing);
+			Env(std::unique_ptr<Env> enclosing);
 
 			void define(std::string name, boost::any value);
 			void assign(Token name, boost::any value);
 			boost::any get(Token name); 
 		private:
 			std::unordered_map<std::string, boost::any> values;
-			Env& enclosing;
+			std::unique_ptr<Env> enclosing;
 		};
 	}
 }

@@ -25,6 +25,7 @@ namespace Lox {
 		class ExpressionStmt;
 		class VariableStmt;
 		class BlockStmt;
+		class Env;
 
 			template<typename R>
 			class Visitor {
@@ -119,10 +120,20 @@ namespace Lox {
 				boost::any visitExpressionStmt(const ExpressionStmt& stmt) override;
 				boost::any visitVariableStmt(const VariableStmt& stmt) override;
 				boost::any visitBlockStmt(const BlockStmt& stmt) override;
+
+				class EnterEnviromentGuard {
+				public:
+					EnterEnviromentGuard(InterpreterVisitor& i, std::unique_ptr<Env> env);
+					~EnterEnviromentGuard();
+
+				private:
+					InterpreterVisitor& i;
+					std::unique_ptr<Env> previous;
+				};
 			private:
 
 				//global environment by default
-				Env gEnv;
+				std::unique_ptr<Env> gEnv;
 
 				/// <summary>
 				/// Runtime error handling
@@ -145,7 +156,7 @@ namespace Lox {
 				/// Execute statements
 				/// </summary>
 				boost::any execute(const Stmt& stmt);
-				boost::any executeBlock(const std::vector<std::unique_ptr<Stmt>>& stmts, const Env& lEnv);
+				boost::any executeBlock(const std::vector<std::unique_ptr<Stmt>>& stmts, std::unique_ptr<Env> lEnv);
 			};
 
 

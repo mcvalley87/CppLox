@@ -1,12 +1,17 @@
 #include "Env.h"
 #include "Error.h"
+
+
 namespace Lox {
 	namespace Interpreter {
 
 		Env::Env(std::unique_ptr<Env> enclosing) : enclosing(std::move(enclosing)) {};
 
 		void Env::define(std::string name, boost::any value) {
+			std::cout << name << std::endl;
 			values[name] = value;
+
+			//std::cout << "value: " << boost::any_cast<std::string>(values[name]) << std::endl;
 		}
 
 		void Env::assign(Token name, boost::any value) {

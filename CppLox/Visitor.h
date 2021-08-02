@@ -102,6 +102,7 @@ namespace Lox {
 			class InterpreterVisitor : public ExprVisitor, public PrimeStmtVisitor {
 			public:
 
+				InterpreterVisitor();
 				~InterpreterVisitor() = default;
 
 				void interpret(const std::vector<std::unique_ptr<Stmt>>& statements);

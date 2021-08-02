@@ -99,7 +99,10 @@ namespace Lox {
 
 		boost::any InterpreterVisitor::visitAssignExpr(const AssignExpr& expr) {
 			boost::any value = evaluate(expr.getValue());
-			return nullptr;
+			//std::cout << "here damnit\n\n\n";
+			assert(gEnv != nullptr);
+			gEnv->assign(expr.getName(), value);
+			return value;
 		}
 		boost::any InterpreterVisitor::evaluate(const Expr& expr) { return expr.accept(*this); }
 

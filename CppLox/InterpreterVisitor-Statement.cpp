@@ -11,7 +11,7 @@ namespace Lox {
 		void InterpreterVisitor::interpret(const std::vector<std::unique_ptr<Stmt>>& statements) {
 			try {
 				for (const auto& stmtptr : statements) {
-					//assert(stmtptr != nullptr);
+					assert(stmtptr != nullptr);
 					if (stmtptr == nullptr) return;
 					execute(*stmtptr);
 				}
@@ -71,9 +71,12 @@ namespace Lox {
 
 			boost::any value;
 
-			//if (!(stmt.getExpr() == nullptr)) {
+			if (stmt.hasInit()) {
 				value = evaluate(stmt.getExpr());
-			//}
+			}
+
+			//std::cout << "variablevisited" << std::endl;
+			assert(gEnv != nullptr);
 
 			gEnv->define(stmt.getName().getLexeme(), value);
 			return nullptr;

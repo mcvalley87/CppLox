@@ -51,6 +51,9 @@
     <ClCompile Include="BlockStmt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InterpreterVisitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Expr.h">

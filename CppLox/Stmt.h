@@ -43,7 +43,7 @@ namespace Lox {
 
 			const Expr& getExpr() const { return *init; }
 			const Token& getName() const { return name; }
-
+			bool hasInit() const { return init != nullptr; }
 		private:
 			std::unique_ptr<Expr> init;
 			Token name;

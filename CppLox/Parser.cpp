@@ -38,13 +38,12 @@ namespace Lox {
 			if (match(TokenType::EQUAL)) {
 				auto equals = previous();
 				auto value = assignment();
-
-				if (typeid(expr) == typeid(std::unique_ptr<VariableExpr>)) {
-					auto name = ((VariableExpr&)*expr).getVar();
-					return std::make_unique<AssignExpr>(name, std::move(value));
+				auto* varExpr = dynamic_cast<VariableExpr*>(expr.get());
+				if (varExpr) {
+					return std::make_unique<AssignExpr>(varExpr->getVar(), std::move(value));
 				}
 
-				//error(TokenType::EQUALS, "Invalid assignment target.");
+				//error(Token(TokenType::EQUAL), "Invalid assignment target.");
 			}
 
 			return expr;
@@ -186,9 +185,9 @@ namespace Lox {
 		}
 
 		std::unique_ptr<Stmt> Parser::varDeclaration() {
-			Token name = consume(TokenType::IDENTIFIER, "Expect variable name.");
+			auto name = consume(TokenType::IDENTIFIER, "Expect variable name.");
 
-			std::unique_ptr<Expr> expr = nullptr;
+			std::unique_ptr<Expr> expr;
 
 			if (match(TokenType::EQUAL)) expr = expression();
 

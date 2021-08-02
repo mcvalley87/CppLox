@@ -20,8 +20,8 @@ namespace Lox {
 			return visitor.visitExpressionStmt(*this);
 		}
 
-		VariableStmt::VariableStmt(Token name, std::unique_ptr<Expr> init) : name(name), init(std::move(init)) {
-			assert(this->init != nullptr);
+		VariableStmt::VariableStmt(Token name, std::unique_ptr<Expr> init) : name(std::move(name)), init(std::move(init)) {
+			assert(this->getName().getType() == TokenType::IDENTIFIER);
 		}
 
 		boost::any VariableStmt::accept(StmtVisitor<boost::any>& visitor) const {

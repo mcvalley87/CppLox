@@ -146,6 +146,7 @@
     <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="InterpreterVisitor-Expression.cpp" />
     <ClCompile Include="InterpreterVisitor-Statement.cpp" />
+    <ClCompile Include="InterpreterVisitor.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Stmt.cpp" />

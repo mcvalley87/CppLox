@@ -9,9 +9,11 @@ namespace Lox {
 
 		void Env::define(std::string name, boost::any value) {
 			std::cout << name << std::endl;
+			std::cout << boost::any_cast<std::string>(value) << std::endl;
+
 			values[name] = value;
 
-			//std::cout << "value: " << boost::any_cast<std::string>(values[name]) << std::endl;
+			std::cout << "value: " << boost::any_cast<std::string>(values[name]) << std::endl;
 		}
 
 		void Env::assign(Token name, boost::any value) {
@@ -28,6 +30,7 @@ namespace Lox {
 			std::string errorMessage = "Undefined variable '" + name.getLexeme() + "'.";
 			throw new RuntimeError(name, errorMessage.c_str());
 		}
+
 		boost::any Env::get(Token name) {
 			if (values.count(name.getLexeme())) {
 				return values[name.getLexeme()];

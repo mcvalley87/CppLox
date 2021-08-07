@@ -49,6 +49,7 @@ namespace Lox {
 				else {
 					run(line);
 					hadError = false;
+					//hadRuntimeError = false;
 				}
 			}
 			

@@ -75,7 +75,6 @@ namespace Lox {
 				value = evaluate(stmt.getExpr());
 			}
 
-			//std::cout << "variablevisited" << std::endl;
 			assert(gEnv != nullptr);
 
 			gEnv->define(stmt.getName().getLexeme(), value);
